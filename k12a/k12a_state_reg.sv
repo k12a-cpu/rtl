@@ -4,9 +4,9 @@
 module k12a_state_reg(
     input   logic               cpu_clock,
     input   logic               reset_n,
-    
+
     input   state_t             next_state,
-    
+
     output  state_t             state
 );
 

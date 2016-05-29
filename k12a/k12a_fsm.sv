@@ -6,7 +6,7 @@ module k12a_fsm(
     input   state_t             state,
     input   logic               skip,
     input   logic               wake, // when high during halt state, system will transition back to fetch state.
-    
+
     output  logic               a_load,
     output  logic               a_store,
     output  acu_input1_sel_t    acu_input1_sel,
@@ -35,7 +35,7 @@ module k12a_fsm(
     output  logic               sp_load,
     output  logic               sp_store
 );
-    
+
     `ALWAYS_COMB begin
         a_load = 1'h0;
         a_store = 1'h0;
@@ -64,7 +64,7 @@ module k12a_fsm(
         skip_store = 1'h0;
         sp_load = 1'h0;
         sp_store = 1'h0;
-        
+
         case (state)
             STATE_FETCH1: begin
                 if (skip) begin
@@ -87,10 +87,10 @@ module k12a_fsm(
                 // skip <- 0
                 skip_sel = SKIP_SEL_0;
                 skip_store = 1'h1;
-                
+
                 next_state = STATE_FETCH2;
             end
-            
+
             STATE_FETCH2: begin
                 // addr_bus = pc + 1
                 acu_input1_sel = ACU_INPUT1_SEL_PC;
@@ -103,10 +103,10 @@ module k12a_fsm(
                 mem_mode = MEM_MODE_READ;
                 // inst_low <- data_bus
                 inst_low_store = 1'h1;
-                
+
                 next_state = STATE_FETCH3;
             end
-            
+
             STATE_FETCH3: begin
                 // addr_bus = pc + 1
                 acu_input1_sel = ACU_INPUT1_SEL_PC;
@@ -114,14 +114,14 @@ module k12a_fsm(
                 acu_load = 1'h1;
                 // pc <- addr_bus
                 pc_store = 1'h1;
-                
+
                 next_state = STATE_EXEC;
             end
-            
+
             STATE_EXEC: begin
                 // Default
                 next_state = STATE_FETCH1;
-                
+
                 if (inst[11]) begin // mov instruction
                     case (inst[13:12]) // source
                         2'h0: begin
@@ -164,7 +164,7 @@ module k12a_fsm(
                         end
                     endcase
                 end
-                
+
                 else begin // not a mov instruction
                     case (inst[15:12]) // opcode
                         4'h0, 4'h4: begin // inc/dec/getsp instruction
@@ -185,14 +185,14 @@ module k12a_fsm(
                             c_store = 1'h1;
                             d_store = 1'h1;
                         end
-                        
+
                         4'h1: begin // in instruction
                             // data_bus = IO[inst[2:0]]
                             io_load = 1'h1;
                             // a <- data_bus
                             a_store = 1'h1;
                         end
-                        
+
                         4'h2: begin // ld/pop instruction
                             if (inst[10]) begin // pop instruction
                                 // addr_bus = sp
@@ -209,7 +209,7 @@ module k12a_fsm(
                             // a <- data_bus
                             a_store = 1'h1;
                         end
-                        
+
                         4'h3: begin // ldd instruction
                             // addr_bus = sp + inst[10:0]
                             acu_input1_sel = ACU_INPUT1_SEL_SP;
@@ -221,14 +221,14 @@ module k12a_fsm(
                             // a <- data_bus
                             a_store = 1'h1;
                         end
-                        
+
                         4'h5: begin // out instruction
                             // data_bus = a
                             a_load = 1'h1;
                             // IO[inst[2:0]] <- data_bus
                             io_store = 1'h1;
                         end
-                        
+
                         4'h6: begin // st/push instruction
                             if (inst[10]) begin // push instruction
                                 // addr_bus = sp - 1
@@ -248,7 +248,7 @@ module k12a_fsm(
                             mem_enable = 1'h1;
                             mem_mode = MEM_MODE_WRITE;
                         end
-                        
+
                         4'h7: begin // std instruction
                             // addr_bus = sp + inst[10:0]
                             acu_input1_sel = ACU_INPUT1_SEL_SP;
@@ -260,7 +260,7 @@ module k12a_fsm(
                             mem_enable = 1'h1;
                             mem_mode = MEM_MODE_WRITE;
                         end
-                        
+
                         4'h8, 4'h9, 4'hA, 4'hB: begin // sk/ski/skn/skni instruction
                             // compute ALU(a, b / i)
                             alu_operand_sel = inst[12] ? ALU_OPERAND_SEL_INST : ALU_OPERAND_SEL_B;
@@ -268,7 +268,7 @@ module k12a_fsm(
                             skip_sel = inst[13] ? SKIP_SEL_CONDITION_INVERTED : SKIP_SEL_CONDITION;
                             skip_store = 1'h1;
                         end
-                        
+
                         4'hC, 4'hD: begin // rjmp/rcall instruction
                             // addr_bus = pc
                             pc_load = 1'h1;
@@ -278,14 +278,14 @@ module k12a_fsm(
                                 c_store = 1'h1;
                                 d_store = 1'h1;
                             end
-                            
+
                             next_state = STATE_RJMP;
                         end
-                        
+
                         4'hE: begin // ljmp/putsp instruction
                             // addr_bus = cd
                             cd_load = 1'h1;
-                            
+
                             if (inst[10]) begin // putsp instruction
                                 // sp <- addr_bus
                                 sp_store = 1'h1;
@@ -295,14 +295,14 @@ module k12a_fsm(
                                 pc_store = 1'h1;
                             end
                         end
-                        
+
                         4'hF: begin // halt instruction
                             next_state = STATE_HALT;
                         end
                     endcase
                 end
             end
-            
+
             STATE_POP: begin
                 // addr_bus = sp + 1
                 acu_input1_sel = ACU_INPUT1_SEL_SP;
@@ -310,10 +310,10 @@ module k12a_fsm(
                 acu_load = 1'h1;
                 // sp <- addr_bus
                 sp_store = 1'h1;
-                
+
                 next_state = STATE_FETCH1;
             end
-            
+
             STATE_RJMP: begin
                 // addr_bus = pc + rel_offset
                 acu_input1_sel = ACU_INPUT1_SEL_PC;
@@ -321,10 +321,10 @@ module k12a_fsm(
                 acu_load = 1'h1;
                 // pc <- addr_bus
                 pc_store = 1'h1;
-                
+
                 next_state = STATE_FETCH1;
             end
-            
+
             STATE_HALT: begin
                 if (wake) begin
                     next_state = STATE_FETCH1;

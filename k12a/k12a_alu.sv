@@ -4,13 +4,13 @@
 module k12a_alu(
     input   logic               alu_load,
     input   alu_operand_sel_t   alu_operand_sel,
-    
+
     input   logic [7:0]         a,
     input   logic [7:0]         b,
     input   logic [15:0]        inst,
-    
+
     inout   wire [7:0]          data_bus,
-    
+
     output  logic               alu_condition
 );
 
@@ -19,7 +19,7 @@ module k12a_alu(
     assign alu_input1 = a;
 
     assign data_bus = alu_load ? alu_output : 8'hzz;
-    
+
     // Adder
     logic [7:0] adder_input1, adder_input2, adder_output;
     logic subtract, adder_carry_in, adder_carry_out;
@@ -28,7 +28,7 @@ module k12a_alu(
     assign adder_input2 = subtract ? ~alu_input2 : alu_input2;
     assign adder_carry_in = subtract;
     assign {adder_carry_out, adder_output} = {1'h0, adder_input1} + {1'h0, adder_input2} + {8'h0, adder_carry_in};
-    
+
     // Flags
     logic zero, negative, borrow, overflow, ult, ule, slt, sle;
     assign zero = alu_output == 8'h00;
@@ -39,7 +39,7 @@ module k12a_alu(
     assign ule = ult | zero;
     assign slt = negative ^ overflow;
     assign sle = slt | zero;
-    
+
     `ALWAYS_COMB begin
         alu_input2 = 8'hxx;
         case (alu_operand_sel)
@@ -47,7 +47,7 @@ module k12a_alu(
             ALU_OPERAND_SEL_INST: alu_input2 = inst[7:0];
         endcase
     end
-    
+
     `ALWAYS_COMB begin
         alu_output = 8'hxx;
         case (inst[10:8])
@@ -61,7 +61,7 @@ module k12a_alu(
             3'h7: alu_output = alu_input2;
         endcase
     end
-    
+
     `ALWAYS_COMB begin
         alu_condition = 1'hx;
         case (inst[10:8])

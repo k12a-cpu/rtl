@@ -4,7 +4,7 @@
 module k12a_gp_regs(
     input   logic               cpu_clock,
     input   logic               reset_n,
-    
+
     input   logic               a_load,
     input   logic               a_store,
     input   logic               b_store,
@@ -14,10 +14,10 @@ module k12a_gp_regs(
     input   cd_sel_t            cd_sel,
     input   logic               d_load,
     input   logic               d_store,
-    
+
     inout   wire [15:0]         addr_bus,
     inout   wire [7:0]          data_bus,
-    
+
     output  logic [7:0]         a,
     output  logic [7:0]         b,
     output  logic [7:0]         c,
@@ -25,12 +25,12 @@ module k12a_gp_regs(
 );
 
     logic [7:0] c_next, d_next;
-    
+
     assign data_bus = a_load ? a : 8'hzz;
     assign data_bus = c_load ? c : 8'hzz;
     assign data_bus = d_load ? d : 8'hzz;
     assign addr_bus = cd_load ? {c, d} : 16'hzzzz;
-    
+
     `ALWAYS_FF @(posedge cpu_clock or negedge reset_n) begin
         if (~reset_n) begin
             a <= 8'h00;
@@ -45,7 +45,7 @@ module k12a_gp_regs(
             d <= d_store ? d_next : d;
         end
     end
-    
+
     `ALWAYS_COMB begin
         c_next = 8'hxx;
         d_next = 8'hxx;

@@ -5,9 +5,9 @@ module k12a(
     input   logic               cpu_clock,
     input   logic               reset_n,
     input   logic               async_write,
-    
+
     output  logic               halted,
-    
+
     input   logic [7:0]         switches_phy,
     input   logic [7:0]         switches_ext,
     input   logic               sel_switches,
@@ -107,7 +107,7 @@ module k12a(
         .sp_load(sp_load),
         .sp_store(sp_store)
     );
-    
+
     k12a_acu acu(
         .acu_input1_sel(acu_input1_sel),
         .acu_input2_sel(acu_input2_sel),
@@ -119,7 +119,7 @@ module k12a(
         .sp(sp),
         .addr_bus(addr_bus)
     );
-    
+
     k12a_alu alu(
         .alu_load(alu_load),
         .alu_operand_sel(alu_operand_sel),
@@ -129,14 +129,14 @@ module k12a(
         .data_bus(data_bus),
         .alu_condition(alu_condition)
     );
-    
+
     k12a_state_reg state_reg(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
         .next_state(next_state),
         .state(state)
     );
-    
+
     k12a_skip_reg skip_reg(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
@@ -145,7 +145,7 @@ module k12a(
         .skip_store(skip_store),
         .skip(skip)
     );
-    
+
     k12a_pc_reg pc_reg(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
@@ -154,7 +154,7 @@ module k12a(
         .addr_bus(addr_bus),
         .pc(pc)
     );
-    
+
     k12a_sp_reg sp_reg(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
@@ -163,7 +163,7 @@ module k12a(
         .addr_bus(addr_bus),
         .sp(sp)
     );
-    
+
     k12a_inst_regs inst_regs(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
@@ -173,7 +173,7 @@ module k12a(
         .data_bus(data_bus),
         .inst(inst)
     );
-    
+
     k12a_gp_regs gp_regs(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
@@ -193,7 +193,7 @@ module k12a(
         .c(c),
         .d(d)
     );
-    
+
     k12a_memory #(
         .ROM_INIT_FILE(ROM_INIT_FILE)
     ) memory(
@@ -203,7 +203,7 @@ module k12a(
         .addr_bus(addr_bus),
         .data_bus(data_bus)
     );
-    
+
     k12a_io io(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),

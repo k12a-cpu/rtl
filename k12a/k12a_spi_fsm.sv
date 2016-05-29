@@ -5,17 +5,17 @@ module k12a_spi_fsm(
     // Decoded IO control signals
     input   logic               spi_begin,
     input   logic               spi_data_io_store,
-    
+
     // FSM inputs
     input   logic               spi_counter_zero,
     input   spi_state_t         spi_state,
-    
+
     // FSM outputs
     output  logic               spi_counter_tick,
     output  spi_data_sel_t      spi_data_sel,
     output  logic               spi_data_store,
     output  spi_state_t         spi_next_state,
-    
+
     // SPI signal feedback from k12a_spi_regs
     input   logic               spi_sck
 );
@@ -25,7 +25,7 @@ module k12a_spi_fsm(
         spi_data_sel = SPI_DATA_SEL_DATA_BUS;
         spi_data_store = 1'h0;
         spi_next_state = spi_state;
-    
+
         case (spi_state)
             SPI_STATE_IDLE: begin
                 if (spi_data_io_store) begin
@@ -37,7 +37,7 @@ module k12a_spi_fsm(
                     spi_next_state = SPI_STATE_XFER;
                 end
             end
-            
+
             SPI_STATE_XFER: begin
                 if (spi_sck) begin
                     // On the next cpu clock event, an SCK falling edge will occur.

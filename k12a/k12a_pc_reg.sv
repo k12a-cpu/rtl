@@ -4,12 +4,12 @@
 module k12a_pc_reg(
     input   logic               cpu_clock,
     input   logic               reset_n,
-    
+
     input   logic               pc_load,
     input   logic               pc_store,
-    
+
     inout   wire [15:0]         addr_bus,
-    
+
     output  logic [15:0]        pc
 );
 

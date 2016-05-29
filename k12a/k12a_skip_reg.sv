@@ -4,11 +4,11 @@
 module k12a_skip_reg(
     input   logic               cpu_clock,
     input   logic               reset_n,
-    
+
     input   logic               alu_condition,
     input   skip_sel_t          skip_sel,
     input   logic               skip_store,
-    
+
     output  logic               skip
 );
 
@@ -22,7 +22,7 @@ module k12a_skip_reg(
             skip <= skip_store ? skip_next : skip;
         end
     end
-    
+
     `ALWAYS_COMB begin
         skip_next = 1'hx;
         case (skip_sel)

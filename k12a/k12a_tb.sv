@@ -53,7 +53,7 @@ module k12a_tb;
         #2 reset_n = 1'h0;
         #10 reset_n = 1'h1;
     end
-    
+
     // IO
     assign spi0_miso = 1'h0;
     logic [7:0] shiftreg;
@@ -72,7 +72,7 @@ module k12a_tb;
         end
     end
     initial $monitor("[%t] %b / %h / '%c'", $time, data, data, data);
-    
+
     // VCD dump and overall control
     initial begin
         $dumpfile("k12a_tb.vcd");
