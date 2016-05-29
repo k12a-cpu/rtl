@@ -5,6 +5,7 @@ module k12a_fsm(
     input   logic [15:0]        inst,
     input   state_t             state,
     input   logic               skip,
+    input   logic               wake, // when high during halt state, system will transition back to fetch state.
     
     output  logic               a_load,
     output  logic               a_store,
@@ -325,8 +326,13 @@ module k12a_fsm(
             end
             
             STATE_HALT: begin
-                // do nothing
-                next_state = STATE_HALT;
+                if (wake) begin
+                    next_state = STATE_FETCH1;
+                end
+                else begin
+                    // do nothing
+                    next_state = STATE_HALT;
+                end
             end
         endcase
     end

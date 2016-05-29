@@ -70,6 +70,7 @@ module k12a(
     logic               sp_load;
     logic               sp_store;
     state_t             state;
+    logic               wake;
 
     assign halted = state == STATE_HALT;
 
@@ -77,6 +78,7 @@ module k12a(
         .inst(inst),
         .state(state),
         .skip(skip),
+        .wake(wake),
         .a_load(a_load),
         .a_store(a_store),
         .acu_input1_sel(acu_input1_sel),
@@ -227,7 +229,8 @@ module k12a(
         .spi0_miso(spi0_miso),
         .spi1_sck(spi1_sck),
         .spi1_mosi(spi1_mosi),
-        .spi1_miso(spi1_miso)
+        .spi1_miso(spi1_miso),
+        .wake(wake)
     );
 
 endmodule

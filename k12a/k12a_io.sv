@@ -29,7 +29,9 @@ module k12a_io(
     input   logic               spi0_miso,
     output  logic               spi1_sck,
     output  logic               spi1_mosi,
-    input   logic               spi1_miso
+    input   logic               spi1_miso,
+    
+    output  logic               wake
 );
 
     logic [7:0] switches;
@@ -78,6 +80,8 @@ module k12a_io(
     assign spi0_data_io_store = io_store & (io_addr == 3'h6);
     assign spi1_data_io_load  = io_load  & (io_addr == 3'h7);
     assign spi1_data_io_store = io_store & (io_addr == 3'h7);
+    
+    assign wake = |buttons;
     
     `ALWAYS_FF @(posedge cpu_clock or negedge reset_n) begin
         if (~reset_n) begin
