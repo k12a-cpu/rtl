@@ -8,10 +8,10 @@ typedef enum logic [1:0] {
 } acu_input1_sel_t;
 
 typedef enum logic [1:0] {
+    ACU_INPUT2_SEL_REL_OFFSET,
     ACU_INPUT2_SEL_0001,
     ACU_INPUT2_SEL_0002,
-    ACU_INPUT2_SEL_FFFF,
-    ACU_INPUT2_SEL_REL_OFFSET
+    ACU_INPUT2_SEL_FFFF
 } acu_input2_sel_t;
 
 typedef enum logic {
