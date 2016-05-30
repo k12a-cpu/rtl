@@ -31,8 +31,8 @@ module k12a_alu(
 
     // Flags
     logic zero, negative, borrow, overflow, ult, ule, slt, sle;
-    assign zero = alu_output == 8'h00;
-    assign negative = alu_output[7];
+    assign zero = adder_output == 8'h00;
+    assign negative = adder_output[7];
     assign borrow = ~adder_carry_out;
     assign overflow = (adder_input1[7] ^ adder_output[7]) & (adder_input2[7] ^ adder_output[7]);
     assign ult = borrow;
