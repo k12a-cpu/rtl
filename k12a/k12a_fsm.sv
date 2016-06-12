@@ -186,11 +186,19 @@ module k12a_fsm(
                             d_store = 1'h1;
                         end
 
-                        4'h1: begin // in instruction
-                            // data_bus = IO[inst[2:0]]
-                            io_load = 1'h1;
-                            // a <- data_bus
-                            a_store = 1'h1;
+                        4'h1: begin // in/out instruction
+                            if (inst[10]) begin // out instruction
+                                // data_bus = a
+                                a_load = 1'h1;
+                                // IO[inst[2:0]] <- data_bus
+                                io_store = 1'h1;
+                            end
+                            else begin // in instruction
+                                // data_bus = IO[inst[2:0]]
+                                io_load = 1'h1;
+                                // a <- data_bus
+                                a_store = 1'h1;
+                            end
                         end
 
                         4'h2: begin // ld/pop instruction
@@ -222,11 +230,13 @@ module k12a_fsm(
                             a_store = 1'h1;
                         end
 
-                        4'h5: begin // out instruction
-                            // data_bus = a
-                            a_load = 1'h1;
-                            // IO[inst[2:0]] <- data_bus
-                            io_store = 1'h1;
+                        4'h5: begin // addsp instruction
+                            // addr_bus = sp + inst[10:0]
+                            acu_input1_sel = ACU_INPUT1_SEL_SP;
+                            acu_input2_sel = ACU_INPUT2_SEL_REL_OFFSET;
+                            acu_load = 1'h1;
+                            // sp <- addr_bus
+                            store_sp = 1'h1;
                         end
 
                         4'h6: begin // st/push instruction
