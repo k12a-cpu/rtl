@@ -8,24 +8,22 @@ module k12a(
 
     output  logic               halted,
 
-    input   logic [7:0]         switches_phy,
-    input   logic [7:0]         switches_ext,
-    input   logic               sel_switches,
-    input   logic [7:0]         buttons_phy,
-    input   logic [7:0]         buttons_ext,
-    output  logic [7:0]         leds,
-    output  logic [7:0]         sevenseg0,
+    output  logic [7:0]         gpio_out0,
+    output  logic [7:0]         gpio_out1,
+    output  logic [7:0]         gpio_out2,
+    input   logic [7:0]         gpio_in0,
+    input   logic [7:0]         gpio_in1,
+    input   logic [7:0]         gpio_in2,
+    output  logic [7:0]         sevenseg0, // dot, a, b, c, d, e, f, g
     output  logic [7:0]         sevenseg1,
-    output  logic               lcd_rs,
-    output  logic               lcd_rw,
+    output  logic               lcd_rs, // 0: instruction, 1: data
+    output  logic               lcd_rw, // 0: write, 1: read
     output  logic               lcd_en,
     output  logic [7:0]         lcd_data,
-    output  logic               spi0_sck,
-    output  logic               spi0_mosi,
-    input   logic               spi0_miso,
-    output  logic               spi1_sck,
-    output  logic               spi1_mosi,
-    input   logic               spi1_miso
+    output  logic               spi_sck,
+    output  logic               spi_mosi,
+    input   logic               spi_miso,
+    input   logic [7:0]         wake_sources
 );
 
     parameter ROM_INIT_FILE = "";
@@ -212,24 +210,22 @@ module k12a(
         .io_store(io_store),
         .io_addr(inst[2:0]),
         .data_bus(data_bus),
-        .switches_phy(switches_phy),
-        .switches_ext(switches_ext),
-        .sel_switches(sel_switches),
-        .buttons_phy(buttons_phy),
-        .buttons_ext(buttons_ext),
-        .leds(leds),
+        .gpio_out0(gpio_out0),
+        .gpio_out1(gpio_out1),
+        .gpio_out2(gpio_out2),
+        .gpio_in0(gpio_in0),
+        .gpio_in1(gpio_in1),
+        .gpio_in2(gpio_in2),
         .sevenseg0(sevenseg0),
         .sevenseg1(sevenseg1),
         .lcd_rs(lcd_rs),
         .lcd_rw(lcd_rw),
         .lcd_en(lcd_en),
         .lcd_data(lcd_data),
-        .spi0_sck(spi0_sck),
-        .spi0_mosi(spi0_mosi),
-        .spi0_miso(spi0_miso),
-        .spi1_sck(spi1_sck),
-        .spi1_mosi(spi1_mosi),
-        .spi1_miso(spi1_miso),
+        .spi_sck(spi_sck),
+        .spi_mosi(spi_mosi),
+        .spi_miso(spi_miso),
+        .wake_sources(wake_sources),
         .wake(wake)
     );
 
