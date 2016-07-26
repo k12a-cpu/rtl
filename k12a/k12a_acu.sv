@@ -33,7 +33,7 @@ module k12a_acu(
     `ALWAYS_COMB begin
         acu_input2 = 16'hxxxx;
         case (acu_input2_sel)
-            ACU_INPUT2_SEL_REL_OFFSET: acu_input2 = {{4{inst[10]}}, inst[10:0], 1'h0};
+            ACU_INPUT2_SEL_REL_OFFSET: acu_input2 = {{5{inst[10]}}, inst[10:0]};
             ACU_INPUT2_SEL_0001:       acu_input2 = 16'h0001;
             ACU_INPUT2_SEL_0002:       acu_input2 = 16'h0002;
             ACU_INPUT2_SEL_FFFF:       acu_input2 = 16'hFFFF;
