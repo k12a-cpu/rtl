@@ -83,7 +83,7 @@ module k12a_io(
     assign data_bus = gpio_in2_load ? gpio_in2 : 8'hzz;
 
     // Registers
-    `ALWAYS_FF @(posedge clock or negedge reset_n) begin
+    `ALWAYS_FF @(posedge cpu_clock or negedge reset_n) begin
         if (~reset_n) begin
             gpio_out0 <= 8'h00;
             gpio_out1 <= 8'h00;

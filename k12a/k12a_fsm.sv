@@ -25,6 +25,7 @@ module k12a_fsm(
     output  logic               inst_low_store,
     output  logic               io_load,
     output  logic               io_store,
+    output  logic               is_skip,
     output  logic               mem_enable,
     output  mem_mode_t          mem_mode,
     output  state_t             next_state,
@@ -55,6 +56,7 @@ module k12a_fsm(
         inst_low_store = 1'h0;
         io_load = 1'h0;
         io_store = 1'h0;
+        is_skip = 1'h0;
         mem_enable = 1'h0;
         mem_mode = MEM_MODE_READ;
         next_state = state;
@@ -236,7 +238,7 @@ module k12a_fsm(
                             acu_input2_sel = ACU_INPUT2_SEL_REL_OFFSET;
                             acu_load = 1'h1;
                             // sp <- addr_bus
-                            store_sp = 1'h1;
+                            sp_store = 1'h1;
                         end
 
                         4'h6: begin // st/push instruction
@@ -273,6 +275,7 @@ module k12a_fsm(
 
                         4'h8, 4'h9, 4'hA, 4'hB: begin // sk/ski/skn/skni instruction
                             // compute ALU(a, b / i)
+                            is_skip = 1'h1;
                             alu_operand_sel = inst[12] ? ALU_OPERAND_SEL_INST : ALU_OPERAND_SEL_B;
                             // skip <- alu_condition / ~alu_condition
                             skip_sel = inst[13] ? SKIP_SEL_CONDITION_INVERTED : SKIP_SEL_CONDITION;

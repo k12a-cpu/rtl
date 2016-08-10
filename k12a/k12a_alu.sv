@@ -11,6 +11,7 @@ module k12a_alu(
 
     inout   wire [7:0]          data_bus,
 
+    input   logic               is_skip,
     output  logic               alu_condition
 );
 
@@ -23,7 +24,7 @@ module k12a_alu(
     // Adder
     logic [7:0] adder_input1, adder_input2, adder_output;
     logic subtract, adder_carry_in, adder_carry_out;
-    assign subtract = inst[8];
+    assign subtract = inst[8] | is_skip;
     assign adder_input1 = alu_input1;
     assign adder_input2 = subtract ? ~alu_input2 : alu_input2;
     assign adder_carry_in = subtract;
