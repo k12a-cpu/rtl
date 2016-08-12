@@ -2,7 +2,7 @@
 
 module k12a_tb;
 
-    parameter ROM_INIT_FILE = "/home/kier/tmp/systest.rmh.dat";
+    parameter ROM_INIT_FILE = "/home/kier/k12a/programs/systest/systest.rmh.dat";
 
     logic clock;
     logic reset_n;
