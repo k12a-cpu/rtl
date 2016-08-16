@@ -64,7 +64,6 @@ module k12a(
     logic               pc_store;
     logic               skip;
     skip_sel_t          skip_sel;
-    logic               skip_store;
     logic [15:0]        sp;
     logic               sp_load;
     logic               sp_store;
@@ -103,7 +102,6 @@ module k12a(
         .pc_load(pc_load),
         .pc_store(pc_store),
         .skip_sel(skip_sel),
-        .skip_store(skip_store),
         .sp_load(sp_load),
         .sp_store(sp_store)
     );
@@ -143,7 +141,6 @@ module k12a(
         .reset_n(reset_n),
         .alu_condition(alu_condition),
         .skip_sel(skip_sel),
-        .skip_store(skip_store),
         .skip(skip)
     );
 

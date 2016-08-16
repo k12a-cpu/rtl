@@ -7,7 +7,6 @@ module k12a_skip_reg(
 
     input   logic               alu_condition,
     input   skip_sel_t          skip_sel,
-    input   logic               skip_store,
 
     output  logic               skip
 );
@@ -19,16 +18,17 @@ module k12a_skip_reg(
             skip <= 1'h0;
         end
         else begin
-            skip <= skip_store ? skip_next : skip;
+            skip <= skip_next;
         end
     end
 
     `ALWAYS_COMB begin
         skip_next = 1'hx;
         case (skip_sel)
+            SKIP_SEL_HOLD:               skip_next = skip;
+            SKIP_SEL_0:                  skip_next = 1'h0;
             SKIP_SEL_CONDITION:          skip_next = alu_condition;
             SKIP_SEL_CONDITION_INVERTED: skip_next = ~alu_condition;
-            SKIP_SEL_0:                  skip_next = 1'h0;
         endcase
     end
 

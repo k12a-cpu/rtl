@@ -32,7 +32,6 @@ module k12a_fsm(
     output  logic               pc_load,
     output  logic               pc_store,
     output  skip_sel_t          skip_sel,
-    output  logic               skip_store,
     output  logic               sp_load,
     output  logic               sp_store
 );
@@ -62,8 +61,7 @@ module k12a_fsm(
         next_state = state;
         pc_load = 1'h0;
         pc_store = 1'h0;
-        skip_sel = SKIP_SEL_0;
-        skip_store = 1'h0;
+        skip_sel = SKIP_SEL_HOLD;
         sp_load = 1'h0;
         sp_store = 1'h0;
 
@@ -88,7 +86,6 @@ module k12a_fsm(
                 inst_high_store = 1'h1;
                 // skip <- 0
                 skip_sel = SKIP_SEL_0;
-                skip_store = 1'h1;
 
                 next_state = STATE_FETCH2;
             end
@@ -279,7 +276,6 @@ module k12a_fsm(
                             alu_operand_sel = inst[12] ? ALU_OPERAND_SEL_INST : ALU_OPERAND_SEL_B;
                             // skip <- alu_condition / ~alu_condition
                             skip_sel = inst[13] ? SKIP_SEL_CONDITION_INVERTED : SKIP_SEL_CONDITION;
-                            skip_store = 1'h1;
                         end
 
                         4'hC, 4'hD: begin // rjmp/rcall instruction
