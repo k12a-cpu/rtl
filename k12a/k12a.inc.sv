@@ -33,7 +33,7 @@ typedef enum logic [1:0] {
     SKIP_SEL_HOLD,
     SKIP_SEL_0,
     SKIP_SEL_CONDITION,
-    SKIP_SEL_CONDITION_INVERTED
+    SKIP_SEL_CONDITION_N
 } skip_sel_t;
 
 typedef enum logic {

@@ -25,10 +25,10 @@ module k12a_skip_reg(
     `ALWAYS_COMB begin
         skip_next = 1'hx;
         case (skip_sel)
-            SKIP_SEL_HOLD:               skip_next = skip;
-            SKIP_SEL_0:                  skip_next = 1'h0;
-            SKIP_SEL_CONDITION:          skip_next = alu_condition;
-            SKIP_SEL_CONDITION_INVERTED: skip_next = ~alu_condition;
+            SKIP_SEL_HOLD:        skip_next = skip;
+            SKIP_SEL_0:           skip_next = 1'h0;
+            SKIP_SEL_CONDITION:   skip_next = alu_condition;
+            SKIP_SEL_CONDITION_N: skip_next = ~alu_condition;
         endcase
     end
 

@@ -275,7 +275,7 @@ module k12a_fsm(
                             is_skip = 1'h1;
                             alu_operand_sel = inst[12] ? ALU_OPERAND_SEL_INST : ALU_OPERAND_SEL_B;
                             // skip <- alu_condition / ~alu_condition
-                            skip_sel = inst[13] ? SKIP_SEL_CONDITION_INVERTED : SKIP_SEL_CONDITION;
+                            skip_sel = inst[13] ? SKIP_SEL_CONDITION_N : SKIP_SEL_CONDITION;
                         end
 
                         4'hC, 4'hD: begin // rjmp/rcall instruction
