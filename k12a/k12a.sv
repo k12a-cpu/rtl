@@ -58,7 +58,6 @@ module k12a(
     logic               is_skip;
     logic               mem_enable;
     mem_mode_t          mem_mode;
-    state_t             next_state;
     logic [15:0]        pc;
     logic               pc_load;
     logic               pc_store;
@@ -68,6 +67,7 @@ module k12a(
     logic               sp_load;
     logic               sp_store;
     state_t             state;
+    state_t             state_next;
     logic               wake;
 
     assign halted = state == STATE_HALT;
@@ -98,12 +98,12 @@ module k12a(
         .is_skip(is_skip),
         .mem_enable(mem_enable),
         .mem_mode(mem_mode),
-        .next_state(next_state),
         .pc_load(pc_load),
         .pc_store(pc_store),
         .skip_sel(skip_sel),
         .sp_load(sp_load),
-        .sp_store(sp_store)
+        .sp_store(sp_store),
+        .state_next(state_next)
     );
 
     k12a_acu acu(
@@ -132,7 +132,7 @@ module k12a(
     k12a_state_reg state_reg(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
-        .next_state(next_state),
+        .state_next(state_next),
         .state(state)
     );
 

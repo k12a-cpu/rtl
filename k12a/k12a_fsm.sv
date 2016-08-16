@@ -28,12 +28,12 @@ module k12a_fsm(
     output  logic               is_skip,
     output  logic               mem_enable,
     output  mem_mode_t          mem_mode,
-    output  state_t             next_state,
     output  logic               pc_load,
     output  logic               pc_store,
     output  skip_sel_t          skip_sel,
     output  logic               sp_load,
-    output  logic               sp_store
+    output  logic               sp_store,
+    output  state_t             state_next
 );
 
     `ALWAYS_COMB begin
@@ -58,12 +58,12 @@ module k12a_fsm(
         is_skip = 1'h0;
         mem_enable = 1'h0;
         mem_mode = MEM_MODE_READ;
-        next_state = state;
         pc_load = 1'h0;
         pc_store = 1'h0;
         skip_sel = SKIP_SEL_HOLD;
         sp_load = 1'h0;
         sp_store = 1'h0;
+        state_next = state;
 
         case (state)
             STATE_FETCH1: begin
@@ -87,7 +87,7 @@ module k12a_fsm(
                 // skip <- 0
                 skip_sel = SKIP_SEL_0;
 
-                next_state = STATE_FETCH2;
+                state_next = STATE_FETCH2;
             end
 
             STATE_FETCH2: begin
@@ -103,7 +103,7 @@ module k12a_fsm(
                 // inst_low <- data_bus
                 inst_low_store = 1'h1;
 
-                next_state = STATE_FETCH3;
+                state_next = STATE_FETCH3;
             end
 
             STATE_FETCH3: begin
@@ -114,12 +114,12 @@ module k12a_fsm(
                 // pc <- addr_bus
                 pc_store = 1'h1;
 
-                next_state = STATE_EXEC;
+                state_next = STATE_EXEC;
             end
 
             STATE_EXEC: begin
                 // Default
-                next_state = STATE_FETCH1;
+                state_next = STATE_FETCH1;
 
                 if (inst[11]) begin // mov instruction
                     case (inst[13:12]) // source
@@ -204,7 +204,7 @@ module k12a_fsm(
                             if (inst[10]) begin // pop instruction
                                 // addr_bus = sp
                                 sp_load = 1'h1;
-                                next_state = STATE_POP; // Additional state deals with incrementing SP
+                                state_next = STATE_POP; // Additional state deals with incrementing SP
                             end
                             else begin // ld instruction
                                 // addr_bus = cd
@@ -288,7 +288,7 @@ module k12a_fsm(
                                 d_store = 1'h1;
                             end
 
-                            next_state = STATE_RJMP;
+                            state_next = STATE_RJMP;
                         end
 
                         4'hE: begin // ljmp/putsp instruction
@@ -306,7 +306,7 @@ module k12a_fsm(
                         end
 
                         4'hF: begin // halt instruction
-                            next_state = STATE_HALT;
+                            state_next = STATE_HALT;
                         end
                     endcase
                 end
@@ -320,7 +320,7 @@ module k12a_fsm(
                 // sp <- addr_bus
                 sp_store = 1'h1;
 
-                next_state = STATE_FETCH1;
+                state_next = STATE_FETCH1;
             end
 
             STATE_RJMP: begin
@@ -331,16 +331,16 @@ module k12a_fsm(
                 // pc <- addr_bus
                 pc_store = 1'h1;
 
-                next_state = STATE_FETCH1;
+                state_next = STATE_FETCH1;
             end
 
             STATE_HALT: begin
                 if (wake) begin
-                    next_state = STATE_FETCH1;
+                    state_next = STATE_FETCH1;
                 end
                 else begin
                     // do nothing
-                    next_state = STATE_HALT;
+                    state_next = STATE_HALT;
                 end
             end
         endcase

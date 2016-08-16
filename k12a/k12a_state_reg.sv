@@ -5,7 +5,7 @@ module k12a_state_reg(
     input   logic               cpu_clock,
     input   logic               reset_n,
 
-    input   state_t             next_state,
+    input   state_t             state_next,
 
     output  state_t             state
 );
@@ -15,7 +15,7 @@ module k12a_state_reg(
             state <= STATE_FETCH1;
         end
         else begin
-            state <= next_state;
+            state <= state_next;
         end
     end
 
