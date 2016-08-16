@@ -30,10 +30,11 @@ module k12a_alu(
     assign {adder_carry_out, adder_output} = {1'h0, adder_input1} + {1'h0, adder_input2} + {8'h0, adder_carry_in};
 
     // Flags
-    logic zero, negative, borrow, overflow, ult, ule, slt, sle;
+    logic borrow, zero, negative, lsb, overflow, ult, ule, slt, sle;
+    assign borrow = ~adder_carry_out;
     assign zero = adder_output == 8'h00;
     assign negative = adder_output[7];
-    assign borrow = ~adder_carry_out;
+    assign lsb = adder_output[0];
     assign overflow = (adder_input1[7] ^ adder_output[7]) & (adder_input2[7] ^ adder_output[7]);
     assign ult = borrow;
     assign ule = ult | zero;
@@ -67,7 +68,7 @@ module k12a_alu(
         case (inst[10:8])
             3'h0: alu_condition = zero;
             3'h1: alu_condition = negative;
-            3'h2: alu_condition = borrow;
+            3'h2: alu_condition = lsb;
             3'h3: alu_condition = overflow;
             3'h4: alu_condition = ult;
             3'h5: alu_condition = ule;
