@@ -55,7 +55,6 @@ module k12a(
     logic               inst_low_store;
     logic               io_load;
     logic               io_store;
-    logic               is_skip;
     logic               mem_enable;
     mem_mode_t          mem_mode;
     logic [15:0]        pc;
@@ -95,7 +94,6 @@ module k12a(
         .inst_low_store(inst_low_store),
         .io_load(io_load),
         .io_store(io_store),
-        .is_skip(is_skip),
         .mem_enable(mem_enable),
         .mem_mode(mem_mode),
         .pc_load(pc_load),
@@ -125,7 +123,6 @@ module k12a(
         .b(b),
         .inst(inst),
         .data_bus(data_bus),
-        .is_skip(is_skip),
         .alu_condition(alu_condition)
     );
 
