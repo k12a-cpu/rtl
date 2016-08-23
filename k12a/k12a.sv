@@ -55,8 +55,10 @@ module k12a(
     logic               inst_low_store;
     logic               io_load;
     logic               io_store;
-    logic               mem_enable;
-    mem_mode_t          mem_mode;
+    logic               mem_rom_ce_n;
+    logic               mem_ram_ce_n;
+    logic               mem_oe_n;
+    logic               mem_we_n;
     logic [15:0]        pc;
     logic               pc_load;
     logic               pc_store;
@@ -76,6 +78,8 @@ module k12a(
         .state(state),
         .skip(skip),
         .wake(wake),
+        .addr_bus_msb(addr_bus[15]),
+        .async_write(async_write),
         .a_load(a_load),
         .a_store(a_store),
         .acu_input1_sel(acu_input1_sel),
@@ -94,8 +98,10 @@ module k12a(
         .inst_low_store(inst_low_store),
         .io_load(io_load),
         .io_store(io_store),
-        .mem_enable(mem_enable),
-        .mem_mode(mem_mode),
+        .mem_rom_ce_n(mem_rom_ce_n),
+        .mem_ram_ce_n(mem_ram_ce_n),
+        .mem_oe_n(mem_oe_n),
+        .mem_we_n(mem_we_n),
         .pc_load(pc_load),
         .pc_store(pc_store),
         .skip_sel(skip_sel),
@@ -192,9 +198,10 @@ module k12a(
     k12a_memory #(
         .ROM_INIT_FILE(ROM_INIT_FILE)
     ) memory(
-        .mem_enable(mem_enable),
-        .mem_mode(mem_mode),
-        .async_write(async_write),
+        .mem_rom_ce_n(mem_rom_ce_n),
+        .mem_ram_ce_n(mem_ram_ce_n),
+        .mem_oe_n(mem_oe_n),
+        .mem_we_n(mem_we_n),
         .addr_bus(addr_bus),
         .data_bus(data_bus)
     );

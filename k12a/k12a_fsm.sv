@@ -6,6 +6,8 @@ module k12a_fsm(
     input   state_t             state,
     input   logic               skip,
     input   logic               wake, // when high during halt state, system will transition back to fetch state.
+    input   logic               addr_bus_msb,
+    input   logic               async_write,
 
     output  logic               a_load,
     output  logic               a_store,
@@ -25,8 +27,10 @@ module k12a_fsm(
     output  logic               inst_low_store,
     output  logic               io_load,
     output  logic               io_store,
-    output  logic               mem_enable,
-    output  mem_mode_t          mem_mode,
+    output  logic               mem_rom_ce_n,
+    output  logic               mem_ram_ce_n,
+    output  logic               mem_oe_n,
+    output  logic               mem_we_n,
     output  logic               pc_load,
     output  logic               pc_store,
     output  skip_sel_t          skip_sel,
@@ -34,6 +38,21 @@ module k12a_fsm(
     output  logic               sp_store,
     output  state_t             state_next
 );
+
+    logic mem_enable;
+    mem_mode_t mem_mode;
+    logic mem_rom_ce;
+    logic mem_ram_ce;
+    logic mem_oe;
+    logic mem_we;
+    assign mem_rom_ce = mem_enable & (addr_bus_msb == 1'h0);
+    assign mem_ram_ce = mem_enable & (addr_bus_msb == 1'h1);
+    assign mem_oe = mem_mode == MEM_MODE_READ;
+    assign mem_we = (mem_mode == MEM_MODE_WRITE) & async_write;
+    assign mem_rom_ce_n = ~mem_rom_ce;
+    assign mem_ram_ce_n = ~mem_ram_ce;
+    assign mem_oe_n = ~mem_oe;
+    assign mem_we_n = ~mem_we;
 
     `ALWAYS_COMB begin
         a_load = 1'h0;
