@@ -30,16 +30,21 @@ module k12a_alu(
     assign {adder_carry_out, adder_output} = {1'h0, adder_input1} + {1'h0, adder_input2} + {8'h0, adder_carry_in};
 
     // Flags
-    logic borrow, zero, negative, lsb, overflow, ult, ule, slt, sle;
-    assign borrow = ~adder_carry_out;
-    assign zero = adder_output == 8'h00;
-    assign negative = adder_output[7];
-    assign lsb = adder_output[0];
-    assign overflow = (adder_input1[7] ^ adder_output[7]) & (adder_input2[7] ^ adder_output[7]);
-    assign ult = borrow;
-    assign ule = ult | zero;
-    assign slt = negative ^ overflow;
-    assign sle = slt | zero;
+    logic zero, negative, lsb, overflow, ult, ule, slt, sle;
+    k12a_alu_logic alu_logic(
+        .adder_carry_out(adder_carry_out),
+        .adder_output(adder_output),
+        .adder_input1_msb(adder_input1[7]),
+        .adder_input2_msb(adder_input2[7]),
+        .zero(zero),
+        .negative(negative),
+        .lsb(lsb),
+        .overflow(overflow),
+        .ult(ult),
+        .ule(ule),
+        .slt(slt),
+        .sle(sle)
+    );
 
     `ALWAYS_COMB begin
         alu_input2 = 8'hxx;
