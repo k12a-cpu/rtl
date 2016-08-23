@@ -16,6 +16,7 @@ module k12a_fsm(
     output  logic               acu_load,
     output  logic               alu_load,
     output  alu_operand_sel_t   alu_operand_sel,
+    output  logic               alu_subtract,
     output  logic               b_store,
     output  logic               c_load,
     output  logic               c_store,
@@ -53,6 +54,8 @@ module k12a_fsm(
     assign mem_ram_ce_n = ~mem_ram_ce;
     assign mem_oe_n = ~mem_oe;
     assign mem_we_n = ~mem_we;
+
+    assign alu_subtract = inst[8] | ~inst[11];
 
     `ALWAYS_COMB begin
         a_load = 1'h0;

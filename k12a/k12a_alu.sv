@@ -4,6 +4,7 @@
 module k12a_alu(
     input   logic               alu_load,
     input   alu_operand_sel_t   alu_operand_sel,
+    input   logic               alu_subtract,
 
     input   logic [7:0]         a,
     input   logic [7:0]         b,
@@ -22,11 +23,10 @@ module k12a_alu(
 
     // Adder
     logic [7:0] adder_input1, adder_input2, adder_output;
-    logic subtract, adder_carry_in, adder_carry_out;
-    assign subtract = inst[8] | ~inst[11];
+    logic adder_carry_in, adder_carry_out;
     assign adder_input1 = alu_input1;
-    assign adder_input2 = subtract ? ~alu_input2 : alu_input2;
-    assign adder_carry_in = subtract;
+    assign adder_input2 = alu_subtract ? ~alu_input2 : alu_input2;
+    assign adder_carry_in = alu_subtract;
     assign {adder_carry_out, adder_output} = {1'h0, adder_input1} + {1'h0, adder_input2} + {8'h0, adder_carry_in};
 
     // Flags

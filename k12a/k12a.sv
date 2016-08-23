@@ -40,6 +40,7 @@ module k12a(
     logic               alu_condition;
     logic               alu_load;
     alu_operand_sel_t   alu_operand_sel;
+    logic               alu_subtract;
     logic [7:0]         b;
     logic               b_store;
     logic [7:0]         c;
@@ -87,6 +88,7 @@ module k12a(
         .acu_load(acu_load),
         .alu_load(alu_load),
         .alu_operand_sel(alu_operand_sel),
+        .alu_subtract(alu_subtract),
         .b_store(b_store),
         .c_load(c_load),
         .c_store(c_store),
@@ -125,6 +127,7 @@ module k12a(
     k12a_alu alu(
         .alu_load(alu_load),
         .alu_operand_sel(alu_operand_sel),
+        .alu_subtract(alu_subtract),
         .a(a),
         .b(b),
         .inst(inst),
