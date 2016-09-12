@@ -32,41 +32,41 @@ module k12a(
     wire [15:0]         addr_bus;
 
     logic [7:0]         a;
-    logic               a_load;
+    logic               a_load_n;
     logic               a_store;
     acu_input1_sel_t    acu_input1_sel;
     acu_input2_sel_t    acu_input2_sel;
-    logic               acu_load;
+    logic               acu_load_n;
     logic               alu_condition;
-    logic               alu_load;
+    logic               alu_load_n;
     alu_operand_sel_t   alu_operand_sel;
     logic               alu_subtract;
     logic [7:0]         b;
     logic               b_store;
     logic [7:0]         c;
-    logic               c_load;
+    logic               c_load_n;
     logic               c_store;
-    logic               cd_load;
+    logic               cd_load_n;
     cd_sel_t            cd_sel;
     logic [7:0]         d;
-    logic               d_load;
+    logic               d_load_n;
     logic               d_store;
     logic [15:0]        inst;
     logic               inst_high_store;
     logic               inst_low_store;
-    logic               io_load;
-    logic               io_store;
+    logic               io_load_n;
+    logic               io_store_n;
     logic               mem_rom_ce_n;
     logic               mem_ram_ce_n;
     logic               mem_oe_n;
     logic               mem_we_n;
     logic [15:0]        pc;
-    logic               pc_load;
+    logic               pc_load_n;
     logic               pc_store;
     logic               skip;
     skip_sel_t          skip_sel;
     logic [15:0]        sp;
-    logic               sp_load;
+    logic               sp_load_n;
     logic               sp_store;
     state_t             state;
     state_t             state_next;
@@ -81,33 +81,33 @@ module k12a(
         .wake(wake),
         .addr_bus_msb(addr_bus[15]),
         .async_write(async_write),
-        .a_load(a_load),
+        .a_load_n(a_load_n),
         .a_store(a_store),
         .acu_input1_sel(acu_input1_sel),
         .acu_input2_sel(acu_input2_sel),
-        .acu_load(acu_load),
-        .alu_load(alu_load),
+        .acu_load_n(acu_load_n),
+        .alu_load_n(alu_load_n),
         .alu_operand_sel(alu_operand_sel),
         .alu_subtract(alu_subtract),
         .b_store(b_store),
-        .c_load(c_load),
+        .c_load_n(c_load_n),
         .c_store(c_store),
-        .cd_load(cd_load),
+        .cd_load_n(cd_load_n),
         .cd_sel(cd_sel),
-        .d_load(d_load),
+        .d_load_n(d_load_n),
         .d_store(d_store),
         .inst_high_store(inst_high_store),
         .inst_low_store(inst_low_store),
-        .io_load(io_load),
-        .io_store(io_store),
+        .io_load_n(io_load_n),
+        .io_store_n(io_store_n),
         .mem_rom_ce_n(mem_rom_ce_n),
         .mem_ram_ce_n(mem_ram_ce_n),
         .mem_oe_n(mem_oe_n),
         .mem_we_n(mem_we_n),
-        .pc_load(pc_load),
+        .pc_load_n(pc_load_n),
         .pc_store(pc_store),
         .skip_sel(skip_sel),
-        .sp_load(sp_load),
+        .sp_load_n(sp_load_n),
         .sp_store(sp_store),
         .state_next(state_next)
     );
@@ -115,7 +115,7 @@ module k12a(
     k12a_acu acu(
         .acu_input1_sel(acu_input1_sel),
         .acu_input2_sel(acu_input2_sel),
-        .acu_load(acu_load),
+        .acu_load_n(acu_load_n),
         .c(c),
         .d(d),
         .inst(inst),
@@ -125,7 +125,7 @@ module k12a(
     );
 
     k12a_alu alu(
-        .alu_load(alu_load),
+        .alu_load_n(alu_load_n),
         .alu_operand_sel(alu_operand_sel),
         .alu_subtract(alu_subtract),
         .a(a),
@@ -153,7 +153,7 @@ module k12a(
     k12a_pc_reg pc_reg(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
-        .pc_load(pc_load),
+        .pc_load_n(pc_load_n),
         .pc_store(pc_store),
         .addr_bus(addr_bus),
         .pc(pc)
@@ -162,7 +162,7 @@ module k12a(
     k12a_sp_reg sp_reg(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
-        .sp_load(sp_load),
+        .sp_load_n(sp_load_n),
         .sp_store(sp_store),
         .addr_bus(addr_bus),
         .sp(sp)
@@ -181,14 +181,14 @@ module k12a(
     k12a_gp_regs gp_regs(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
-        .a_load(a_load),
+        .a_load_n(a_load_n),
         .a_store(a_store),
         .b_store(b_store),
-        .c_load(c_load),
+        .c_load_n(c_load_n),
         .c_store(c_store),
-        .cd_load(cd_load),
+        .cd_load_n(cd_load_n),
         .cd_sel(cd_sel),
-        .d_load(d_load),
+        .d_load_n(d_load_n),
         .d_store(d_store),
         .addr_bus(addr_bus),
         .data_bus(data_bus),
@@ -213,8 +213,8 @@ module k12a(
         .cpu_clock(cpu_clock),
         .reset_n(reset_n),
         .async_write(async_write),
-        .io_load(io_load),
-        .io_store(io_store),
+        .io_load_n(io_load_n),
+        .io_store_n(io_store_n),
         .io_addr(inst[2:0]),
         .data_bus(data_bus),
         .gpio_out0(gpio_out0),

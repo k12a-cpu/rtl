@@ -5,14 +5,14 @@ module k12a_gp_regs(
     input   logic               cpu_clock,
     input   logic               reset_n,
 
-    input   logic               a_load,
+    input   logic               a_load_n,
     input   logic               a_store,
     input   logic               b_store,
-    input   logic               c_load,
+    input   logic               c_load_n,
     input   logic               c_store,
-    input   logic               cd_load,
+    input   logic               cd_load_n,
     input   cd_sel_t            cd_sel,
-    input   logic               d_load,
+    input   logic               d_load_n,
     input   logic               d_store,
 
     inout   wire [15:0]         addr_bus,
@@ -23,6 +23,12 @@ module k12a_gp_regs(
     output  logic [7:0]         c,
     output  logic [7:0]         d
 );
+
+    logic a_load, c_load, cd_load, d_load;
+    assign a_load = ~a_load_n;
+    assign c_load = ~c_load_n;
+    assign cd_load = ~cd_load_n;
+    assign d_load = ~d_load_n;
 
     logic [7:0] c_next, d_next;
 

@@ -5,13 +5,16 @@ module k12a_sp_reg(
     input   logic               cpu_clock,
     input   logic               reset_n,
 
-    input   logic               sp_load,
+    input   logic               sp_load_n,
     input   logic               sp_store,
 
     inout   wire [15:0]         addr_bus,
 
     output  logic [15:0]        sp
 );
+
+    logic sp_load;
+    assign sp_load = ~sp_load_n;
 
     assign addr_bus = sp_load ? sp : 16'hzzzz;
 

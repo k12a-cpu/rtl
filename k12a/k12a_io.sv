@@ -6,8 +6,8 @@ module k12a_io(
     input   logic               reset_n,
     input   logic               async_write,
 
-    input   logic               io_load,
-    input   logic               io_store,
+    input   logic               io_load_n,
+    input   logic               io_store_n,
     input   logic [2:0]         io_addr,
 
     inout   wire [7:0]          data_bus,
@@ -31,6 +31,10 @@ module k12a_io(
 
     output  logic               wake
 );
+
+    logic io_load, io_store;
+    assign io_load = ~io_load_n;
+    assign io_store = ~io_store_n;
 
     logic gpio_out0_load;
     logic gpio_out1_load;

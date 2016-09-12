@@ -2,7 +2,7 @@
 `include "k12a.inc.sv"
 
 module k12a_alu(
-    input   logic               alu_load,
+    input   logic               alu_load_n,
     input   alu_operand_sel_t   alu_operand_sel,
     input   logic               alu_subtract,
 
@@ -14,6 +14,9 @@ module k12a_alu(
 
     output  logic               alu_condition
 );
+
+    logic alu_load;
+    assign alu_load = ~alu_load_n;
 
     logic [7:0] alu_input1, alu_input2, alu_output;
 

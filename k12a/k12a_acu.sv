@@ -4,7 +4,7 @@
 module k12a_acu(
     input   acu_input1_sel_t    acu_input1_sel,
     input   acu_input2_sel_t    acu_input2_sel,
-    input   logic               acu_load,
+    input   logic               acu_load_n,
 
     input   logic [7:0]         c,
     input   logic [7:0]         d,
@@ -14,6 +14,9 @@ module k12a_acu(
 
     inout   wire [15:0]         addr_bus
 );
+
+    logic acu_load;
+    assign acu_load = ~acu_load_n;
 
     logic [15:0] acu_input1, acu_input2, acu_output;
 

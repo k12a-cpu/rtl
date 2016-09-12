@@ -9,51 +9,74 @@ module k12a_fsm(
     input   logic               addr_bus_msb,
     input   logic               async_write,
 
-    output  logic               a_load,
+    output  logic               a_load_n,
     output  logic               a_store,
     output  acu_input1_sel_t    acu_input1_sel,
     output  acu_input2_sel_t    acu_input2_sel,
-    output  logic               acu_load,
-    output  logic               alu_load,
+    output  logic               acu_load_n,
+    output  logic               alu_load_n,
     output  alu_operand_sel_t   alu_operand_sel,
     output  logic               alu_subtract,
     output  logic               b_store,
-    output  logic               c_load,
+    output  logic               c_load_n,
     output  logic               c_store,
-    output  logic               cd_load,
+    output  logic               cd_load_n,
     output  cd_sel_t            cd_sel,
-    output  logic               d_load,
+    output  logic               d_load_n,
     output  logic               d_store,
     output  logic               inst_high_store,
     output  logic               inst_low_store,
-    output  logic               io_load,
-    output  logic               io_store,
+    output  logic               io_load_n,
+    output  logic               io_store_n,
     output  logic               mem_rom_ce_n,
     output  logic               mem_ram_ce_n,
     output  logic               mem_oe_n,
     output  logic               mem_we_n,
-    output  logic               pc_load,
+    output  logic               pc_load_n,
     output  logic               pc_store,
     output  skip_sel_t          skip_sel,
-    output  logic               sp_load,
+    output  logic               sp_load_n,
     output  logic               sp_store,
     output  state_t             state_next
 );
 
     logic mem_enable;
     mem_mode_t mem_mode;
+    
+    logic a_load;
+    logic acu_load;
+    logic alu_load;
+    logic c_load;
+    logic cd_load;
+    logic d_load;
+    logic io_load;
+    logic io_store;
     logic mem_rom_ce;
     logic mem_ram_ce;
     logic mem_oe;
     logic mem_we;
-    assign mem_rom_ce = mem_enable & (addr_bus_msb == 1'h0);
-    assign mem_ram_ce = mem_enable & (addr_bus_msb == 1'h1);
-    assign mem_oe = mem_mode == MEM_MODE_READ;
-    assign mem_we = (mem_mode == MEM_MODE_WRITE) & async_write;
+    logic pc_load;
+    logic sp_load;
+    
+    assign a_load_n = ~a_load;
+    assign acu_load_n = ~acu_load;
+    assign alu_load_n = ~alu_load;
+    assign c_load_n = ~c_load;
+    assign cd_load_n = ~cd_load;
+    assign d_load_n = ~d_load;
+    assign io_load_n = ~io_load;
+    assign io_store_n = ~io_store;
     assign mem_rom_ce_n = ~mem_rom_ce;
     assign mem_ram_ce_n = ~mem_ram_ce;
     assign mem_oe_n = ~mem_oe;
     assign mem_we_n = ~mem_we;
+    assign pc_load_n = ~pc_load;
+    assign sp_load_n = ~sp_load;
+    
+    assign mem_rom_ce = mem_enable & (addr_bus_msb == 1'h0);
+    assign mem_ram_ce = mem_enable & (addr_bus_msb == 1'h1);
+    assign mem_oe = mem_mode == MEM_MODE_READ;
+    assign mem_we = (mem_mode == MEM_MODE_WRITE) & async_write;
 
     assign alu_subtract = inst[8] | ~inst[11];
 
