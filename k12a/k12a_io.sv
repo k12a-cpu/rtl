@@ -160,14 +160,11 @@ module k12a_io(
         endcase
     end
 
-    k12a_sevenseg_decoder sevenseg0_decoder(
-        .digit(sevenseg0_reg[3:0]),
-        .segments(sevenseg0_decoded)
-    );
-
-    k12a_sevenseg_decoder sevenseg1_decoder(
-        .digit(sevenseg1_reg[3:0]),
-        .segments(sevenseg1_decoded)
+    k12a_sevenseg_decoders sevenseg_decoders(
+        .digit0(sevenseg0_reg[3:0]),
+        .segments0(sevenseg0_decoded),
+        .digit1(sevenseg1_reg[3:0]),
+        .segments1(sevenseg1_decoded)
     );
 
     k12a_spi spi(
