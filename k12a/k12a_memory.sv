@@ -13,7 +13,7 @@ module k12a_memory(
 
     parameter ROM_INIT_FILE = "";
 
-    ic28256 #(
+    async_eeprom_32kb #(
         .INIT_FILE(ROM_INIT_FILE)
     ) rom(
         .addr(addr_bus[14:0]),
@@ -22,7 +22,7 @@ module k12a_memory(
         .oe_n(mem_oe_n)
     );
 
-    ic62256 ram(
+    async_ram_32kb ram(
         .addr(addr_bus[14:0]),
         .data(data_bus),
         .ce_n(mem_ram_ce_n),
