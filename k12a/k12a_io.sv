@@ -68,8 +68,8 @@ module k12a_io(
     assign sevenseg0_mode = control[0];
     assign sevenseg1_mode = control[1];
     assign lcd_rs = control[2];
-    assign lcd_xfer = control_store & control[6];
-    assign spi_begin = control_store & control[7];
+    assign lcd_xfer = control_store & data_bus[6];
+    assign spi_begin = control_store & data_bus[7];
 
     assign sevenseg0 = sevenseg0_mode ? {1'h0, sevenseg0_decoded} : sevenseg0_reg;
     assign sevenseg1 = sevenseg1_mode ? {1'h0, sevenseg1_decoded} : sevenseg1_reg;
