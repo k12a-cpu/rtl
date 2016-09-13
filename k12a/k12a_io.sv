@@ -54,6 +54,7 @@ module k12a_io(
     logic lcd_data_store;
     logic spi_data_store;
 
+    logic lcd_xfer;
     logic spi_begin;
     logic spi_busy;
     logic [5:0] control;
