@@ -2,7 +2,7 @@
 `include "k12a.inc.sv"
 
 module k12a_inst_regs(
-    input   logic               cpu_clock,
+    input   logic               clock,
     input   logic               reset_n,
 
     input   logic               inst_high_store,
@@ -19,7 +19,7 @@ module k12a_inst_regs(
 
     assign inst = {inst_high, inst_low};
 
-    `ALWAYS_FF @(posedge cpu_clock or negedge reset_n) begin
+    `ALWAYS_FF @(posedge clock or negedge reset_n) begin
         if (~reset_n) begin
             inst_high <= 8'h00;
             inst_low <= 8'h00;

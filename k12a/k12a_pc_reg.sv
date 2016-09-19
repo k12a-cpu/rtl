@@ -2,7 +2,7 @@
 `include "k12a.inc.sv"
 
 module k12a_pc_reg(
-    input   logic               cpu_clock,
+    input   logic               clock,
     input   logic               reset_n,
 
     input   logic               pc_load_n,
@@ -18,7 +18,7 @@ module k12a_pc_reg(
 
     assign addr_bus = pc_load ? pc : 16'hzzzz;
 
-    `ALWAYS_FF @(posedge cpu_clock or negedge reset_n) begin
+    `ALWAYS_FF @(posedge clock or negedge reset_n) begin
         if (~reset_n) begin
             pc <= 16'h0000;
         end

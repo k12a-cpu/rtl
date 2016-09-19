@@ -3,7 +3,7 @@
 
 module k12a_spi(
     // Global synchronisation
-    input   logic               cpu_clock,
+    input   logic               clock,
     input   logic               reset_n,
 
     // Interface to k12a_io
@@ -31,7 +31,7 @@ module k12a_spi(
     assign spi_busy = spi_state != SPI_STATE_IDLE;
 
     k12a_spi_regs spi_regs(
-        .cpu_clock(cpu_clock),
+        .clock(clock),
         .reset_n(reset_n),
         .spi_data_io_load(spi_data_io_load),
         .data_bus(data_bus),

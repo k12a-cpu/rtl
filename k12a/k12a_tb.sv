@@ -29,7 +29,7 @@ module k12a_tb;
     k12a #(
         .ROM_INIT_FILE(ROM_INIT_FILE)
     ) k12a(
-        .cpu_clock(clock),
+        .clock(clock),
         .reset_n(reset_n),
         .async_write(async_write),
         .halted(halted),

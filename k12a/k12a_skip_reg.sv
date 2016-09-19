@@ -2,7 +2,7 @@
 `include "k12a.inc.sv"
 
 module k12a_skip_reg(
-    input   logic               cpu_clock,
+    input   logic               clock,
     input   logic               reset_n,
 
     input   logic               alu_condition,
@@ -13,7 +13,7 @@ module k12a_skip_reg(
 
     logic skip_next;
 
-    `ALWAYS_FF @(posedge cpu_clock or negedge reset_n) begin
+    `ALWAYS_FF @(posedge clock or negedge reset_n) begin
         if (~reset_n) begin
             skip <= 1'h0;
         end

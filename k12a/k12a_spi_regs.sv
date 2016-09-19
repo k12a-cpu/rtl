@@ -3,7 +3,7 @@
 
 module k12a_spi_regs(
     // Global synchronisation
-    input   logic               cpu_clock,
+    input   logic               clock,
     input   logic               reset_n,
 
     // Decoded IO control signals
@@ -38,7 +38,7 @@ module k12a_spi_regs(
 
     assign data_bus = spi_data_io_load ? spi_data : 8'hzz;
 
-    `ALWAYS_FF @(posedge cpu_clock or negedge reset_n) begin
+    `ALWAYS_FF @(posedge clock or negedge reset_n) begin
         if (~reset_n) begin
             spi_counter <= 4'h0;
             spi_data <= 8'h00;

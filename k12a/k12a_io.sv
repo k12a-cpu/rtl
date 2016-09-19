@@ -2,7 +2,7 @@
 `include "k12a.inc.sv"
 
 module k12a_io(
-    input   logic               cpu_clock,
+    input   logic               clock,
     input   logic               reset_n,
     input   logic               async_write,
 
@@ -88,7 +88,7 @@ module k12a_io(
     assign data_bus = gpio_in2_load ? gpio_in2 : 8'hzz;
 
     // Registers
-    `ALWAYS_FF @(posedge cpu_clock or negedge reset_n) begin
+    `ALWAYS_FF @(posedge clock or negedge reset_n) begin
         if (~reset_n) begin
             gpio_out0 <= 8'h00;
             gpio_out1 <= 8'h00;
@@ -173,7 +173,7 @@ module k12a_io(
     );
 
     k12a_spi spi(
-        .cpu_clock(cpu_clock),
+        .clock(clock),
         .reset_n(reset_n),
         .spi_data_io_load(spi_data_load),
         .spi_data_io_store(spi_data_store),

@@ -2,7 +2,7 @@
 `include "k12a.inc.sv"
 
 module k12a(
-    input   logic               cpu_clock,
+    input   logic               clock,
     input   logic               reset_n,
     input   logic               async_write,
 
@@ -136,14 +136,14 @@ module k12a(
     );
 
     k12a_state_reg state_reg(
-        .cpu_clock(cpu_clock),
+        .clock(clock),
         .reset_n(reset_n),
         .state_next(state_next),
         .state(state)
     );
 
     k12a_skip_reg skip_reg(
-        .cpu_clock(cpu_clock),
+        .clock(clock),
         .reset_n(reset_n),
         .alu_condition(alu_condition),
         .skip_sel(skip_sel),
@@ -151,7 +151,7 @@ module k12a(
     );
 
     k12a_pc_reg pc_reg(
-        .cpu_clock(cpu_clock),
+        .clock(clock),
         .reset_n(reset_n),
         .pc_load_n(pc_load_n),
         .pc_store(pc_store),
@@ -160,7 +160,7 @@ module k12a(
     );
 
     k12a_sp_reg sp_reg(
-        .cpu_clock(cpu_clock),
+        .clock(clock),
         .reset_n(reset_n),
         .sp_load_n(sp_load_n),
         .sp_store(sp_store),
@@ -169,7 +169,7 @@ module k12a(
     );
 
     k12a_inst_regs inst_regs(
-        .cpu_clock(cpu_clock),
+        .clock(clock),
         .reset_n(reset_n),
         .inst_high_store(inst_high_store),
         .inst_low_store(inst_low_store),
@@ -179,7 +179,7 @@ module k12a(
     );
 
     k12a_gp_regs gp_regs(
-        .cpu_clock(cpu_clock),
+        .clock(clock),
         .reset_n(reset_n),
         .a_load_n(a_load_n),
         .a_store(a_store),
@@ -210,7 +210,7 @@ module k12a(
     );
 
     k12a_io io(
-        .cpu_clock(cpu_clock),
+        .clock(clock),
         .reset_n(reset_n),
         .async_write(async_write),
         .io_load_n(io_load_n),

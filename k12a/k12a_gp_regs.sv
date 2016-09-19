@@ -2,7 +2,7 @@
 `include "k12a.inc.sv"
 
 module k12a_gp_regs(
-    input   logic               cpu_clock,
+    input   logic               clock,
     input   logic               reset_n,
 
     input   logic               a_load_n,
@@ -37,7 +37,7 @@ module k12a_gp_regs(
     assign data_bus = d_load ? d : 8'hzz;
     assign addr_bus = cd_load ? {c, d} : 16'hzzzz;
 
-    `ALWAYS_FF @(posedge cpu_clock or negedge reset_n) begin
+    `ALWAYS_FF @(posedge clock or negedge reset_n) begin
         if (~reset_n) begin
             a <= 8'h00;
             b <= 8'h00;
